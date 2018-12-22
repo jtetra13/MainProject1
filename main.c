@@ -1,78 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "dbl_linked_list.h"
 
 #define MAXSIZE 99
-
-struct Node {
-    char data;
-    struct Node *next;
-    struct Node *prev;
-};
-
-void push(struct Node **headRef, int firstDigit) {
-    struct Node *newNode = (struct Node *) malloc(sizeof(struct Node));
-    newNode->data = firstDigit;
-    newNode->next = (*headRef);
-    newNode->prev = NULL;
-    if ((*headRef) != NULL) {
-        (*headRef)->prev = newNode;
-    }
-
-    *headRef = newNode;
-}
-
-void append(struct Node **headRef, int newData) {
-    struct Node *newNode = (struct Node *) malloc(sizeof(struct Node));
-    struct Node *last = *headRef;
-    newNode->data = newData;
-    newNode->next = NULL;
-    if (*headRef == NULL) {
-        newNode->prev = NULL;
-        *headRef = newNode;
-        return;
-    }
-
-    while (last->next != NULL)
-        last = last->next;
-
-    last->next = newNode;
-    newNode->prev = last;
-}
-
-void printTape(struct Node *node) {
-    struct Node *last;
-    while (node != NULL) {
-        printf("%c", node->data);
-        last = node;
-        node = node->next;
-    }
-}
 
 int main(int argc, char **argv) {
 
     char input[12] = "";
-    int count = 0;
     FILE *f;
-    struct Node *head = NULL;
     printf("Input file: ");
     scanf("%s", input);
     f = fopen(input, "r");
     printf("Writing tape...\n");
+    struct Node *head = NULL;
     while (!feof(f)) {
+        int count = 0;
         char *tape = (char *) malloc(MAXSIZE * sizeof(char));
         fgets(tape, MAXSIZE, f);
         char *initialTape = (char *) malloc(strlen(tape) * sizeof(char));
         sscanf(tape, "%s", initialTape);
         size_t test = sizeof(initialTape);
         while (count < test) {
-            if (count == 0) {
+            if (count == 0 && head == NULL) {
                 push(&head, *(tape + count));
-            } else {
+            } else if (*(tape + count) != '\n' && *(tape + count) != '\000') {
                 append(&head, *(tape + count));
             }
             count++;
         }
+        count = 0;
         printf("Initial Tape Contents: ");
         printTape(head);
         printf("\n");
@@ -101,6 +58,10 @@ int main(int argc, char **argv) {
                     } else if (*moveDirection == 'R' && head->next == NULL) {
                         fgets(tape, MAXSIZE, f);
                         sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
+                        if (*state == *newState)
+                            count++;
+                        else
+                            count--;
                         append(&head, *writeVal);
                         head = head->next;
                     } else if (*moveDirection == 'L' && head->prev != NULL) {
@@ -108,19 +69,27 @@ int main(int argc, char **argv) {
                     } else if (*moveDirection == 'L' && head->prev == NULL) {
                         fgets(tape, MAXSIZE, f);
                         sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
-                        push(&head, *writeVal);
-                       // head = head->prev;
+                        if (*state == *newState)
+                            count++;
+                        push(&head, 'B');
                     }
                 } else
                     while (head->data != *readVal) {
-                        char *tempTape = (char *)malloc((*tape) * sizeof(char));
-                        tempTape = tape;
-                        head -> data = *writeVal;
-                        head = head -> next;
-                        fgets(tape, MAXSIZE, f);
-                        sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
+                           if (count > 0 && head -> data != 'B') {
+                               fseek(f, -20, SEEK_CUR);
+                               fgets(tape, MAXSIZE, f);
+                               count--;
+                               sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
+                           } else   {
+                               fgets(tape, MAXSIZE, f);
+                               sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
+                               if (*state == *newState)
+                                   count++;
+                           }
+                        if (head->data == *readVal)
+                            break;
                         if (*state < *newState) {
-                            head -> data = *writeVal;
+                            head->data = *writeVal;
                             *stateNum = (*stateNum - 1);
                             if (*stateNum == 1) {
                                 break;
@@ -134,25 +103,32 @@ int main(int argc, char **argv) {
                                 head = head->prev;
                             } else if (*moveDirection == 'L' && head->prev == NULL) {
                                 push(&head, *writeVal);
-                               // head = head->prev;
                             }
                             fgets(tape, MAXSIZE, f);
                             sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
-                            break;
-                        } else if (*moveDirection == 'R' && head->next != NULL) {
-                            head = head->next;
-                        } else if (*moveDirection == 'R' && head->next == NULL) {
-                            append(&head, *writeVal);
-                            head = head->next;
-                        } else if (*moveDirection == 'L' && head->prev != NULL) {
-                            head = head->prev;
-                        } else if (*moveDirection == 'L' && head->prev == NULL) {
-                            push(&head, *writeVal);
-                           // head = head->prev;
+                            count = 0;
+                        } else if (*state == *newState) {
+                            head->data = *writeVal;
+                            fgets(tape, MAXSIZE, f);
+                            sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);
+                            if (*state == *newState)
+                                count++;
+                            if (head->data == *readVal)
+                                break;
+                            if (*moveDirection == 'R' && head->next != NULL) {
+                                head = head->next;
+                            } else if (*moveDirection == 'R' && head->next == NULL) {
+                                append(&head, 'B');
+                                head = head->next;
+                            } else if (*moveDirection == 'L' && head->prev != NULL) {
+                                head = head->prev;
+                            } else if (*moveDirection == 'L' && head->prev == NULL) {
+                                push(&head, *writeVal);
+                            }
                         }
                     }
-            } else if (*state < *newState)   {
-                head -> data = *writeVal;
+            } else if (*state < *newState) {
+                head->data = *writeVal;
                 *stateNum = (*stateNum - 1);
                 if (*stateNum == 1) {
                     break;
@@ -166,7 +142,6 @@ int main(int argc, char **argv) {
                     head = head->prev;
                 } else if (*moveDirection == 'L' && head->prev == NULL) {
                     push(&head, *writeVal);
-                   // head = head->prev;
                 }
                 fgets(tape, MAXSIZE, f);
                 sscanf(tape, "%d %c %c %c %d", state, readVal, writeVal, moveDirection, newState);

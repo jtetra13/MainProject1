@@ -41,4 +41,13 @@ void append(struct Node **headRef, int newData) {
     newNode->prev = last;
 }
 
+void printTape(struct Node *node) {
+    struct Node *last;
+    while (node != NULL) {
+        printf("%c", node->data);
+        last = node;
+        node = node->next;
+    }
+}
+
 #endif //MAINPROJECT1_DBL_LINKED_LIST_H
