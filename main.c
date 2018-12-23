@@ -30,9 +30,12 @@ int main(int argc, char **argv) {
             count++;
         }
         count = 0;
-        printf("Initial Tape Contents: ");
-        printTape(head);
-        printf("\n");
+        if (*tape != '\000') {
+            printf("Initial Tape Contents: ");
+            printTape(head);
+            printf("\n");
+        }
+
         fgets(tape, MAXSIZE, f);
         int *stateNum = (int *) malloc(1 * sizeof(int));
         sscanf(tape, "%d", stateNum);
