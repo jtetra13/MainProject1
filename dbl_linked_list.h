@@ -1,6 +1,8 @@
-//
-// Created by jtetra13 on 12/19/18.
-//
+// NAME - JUSTIN MCQUAID
+// DATE - FEBRUARY 18TH, 2019
+// INSTRUCTOR - DANIEL SCHLEGEL
+// COURSE - CSC344 PROGRAMMING LANGUAGES
+// MAIN PROJECT 1
 
 #ifndef MAINPROJECT1_DBL_LINKED_LIST_H
 #define MAINPROJECT1_DBL_LINKED_LIST_H
@@ -20,7 +22,7 @@ void push(struct Node **headRef, int firstDigit) {
         (*headRef)->prev = newNode;
     }
 
-    *headRef = newNode;
+        *headRef = newNode;
 }
 
 void append(struct Node **headRef, int newData) {
@@ -43,9 +45,10 @@ void append(struct Node **headRef, int newData) {
 
 void printTape(struct Node *node) {
     struct Node *last;
+    node = last;
     while (node != NULL) {
         printf("%c", node->data);
-        last = node;
+
         node = node->next;
     }
 }
