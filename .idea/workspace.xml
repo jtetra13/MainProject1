@@ -75,14 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
+            <state relative-caret-position="-987">
               <caret line="4" column="17" selection-end-line="4" selection-end-column="17" />
-              <folding>
-                <element signature="e#1108#1126#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -96,7 +93,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dbl_linked_list.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
@@ -252,12 +249,12 @@
       <workItem from="1550424998313" duration="23827000" />
       <workItem from="1550492394107" duration="8642000" />
       <workItem from="1550938510826" duration="30000" />
-      <workItem from="1550938555329" duration="263000" />
+      <workItem from="1550938555329" duration="539000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="288960000" />
+    <option name="totallyTimeSpent" value="289236000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
@@ -368,16 +365,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="17" selection-end-line="4" selection-end-column="17" />
-          <folding>
-            <element signature="e#1108#1126#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -389,6 +376,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-987">
+          <caret line="4" column="17" selection-end-line="4" selection-end-column="17" />
         </state>
       </provider>
     </entry>
