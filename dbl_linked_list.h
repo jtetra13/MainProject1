@@ -13,43 +13,34 @@ struct Node {
     struct Node *prev;
 };
 
-void push(struct Node **headRef, int firstDigit) {
-    struct Node *newNode = (struct Node *) malloc(sizeof(struct Node));
-    newNode->data = firstDigit;
-    newNode->next = (*headRef);
-    newNode->prev = NULL;
-    if ((*headRef) != NULL) {
-        (*headRef)->prev = newNode;
-    }
-
-        *headRef = newNode;
+struct Node * insert(struct Node *head, int d) {
+    struct Node *new_node = malloc(sizeof(struct Node));
+    new_node->data = d;
+    return new_node;
 }
 
-void append(struct Node **headRef, int newData) {
-    struct Node *newNode = (struct Node *) malloc(sizeof(struct Node));
-    struct Node *last = *headRef;
-    newNode->data = newData;
-    newNode->next = NULL;
-    if (*headRef == NULL) {
-        newNode->prev = NULL;
-        *headRef = newNode;
-        return;
+struct Node * insert_after(struct Node *head, int d) {
+    if (head->next == NULL) {
+        struct Node *next_node=malloc(sizeof(struct Node));
+        head->next = next_node;
+        next_node->prev = head;
+        head = next_node;
+        next_node->data = d;
+        next_node->next = NULL;
+        return next_node;
     }
 
-    while (last->next != NULL)
-        last = last->next;
-
-    last->next = newNode;
-    newNode->prev = last;
 }
 
-void printTape(struct Node *node) {
-    struct Node *last;
-    node = last;
-    while (node != NULL) {
-        printf("%c", node->data);
-
-        node = node->next;
+struct Node * insert_before(struct Node *head, int d)    {
+    if (head -> prev == NULL)   {
+        struct Node *prev_node = malloc(sizeof(struct Node));
+        head->prev = prev_node;
+        prev_node->next = head;
+        head = prev_node;
+        prev_node->data=d;
+        prev_node -> prev = NULL;
+        return prev_node;
     }
 }
 
